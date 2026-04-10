@@ -9,6 +9,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TenantsModule } from './modules/tenants/tenants.module';
 import { TenantsService } from './modules/tenants/tenants.service';
 import { TenantMiddleware } from './common/middleware/tenant.middleware';
+import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -31,6 +33,8 @@ import { TenantMiddleware } from './common/middleware/tenant.middleware';
       }),
     }),
     TenantsModule,
+    UsersModule,
+    AuthModule,
   ],
   providers: [TenantsService],
 })
