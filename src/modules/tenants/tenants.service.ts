@@ -24,4 +24,10 @@ export class TenantsService {
   async findAll(): Promise<Tenant[]> {
     return await this.tenantRepository.find();
   }
+
+  async findOne(id: string): Promise<Tenant | null> {
+    return await this.tenantRepository.findOne({
+      where: { id, isActive: true },
+    });
+  }
 }
