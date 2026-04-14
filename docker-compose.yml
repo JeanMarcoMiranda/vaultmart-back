@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  # Servicio de Base de Datos
+  db:
+    image: postgres:15
+    container_name: vaultmart-db
+    restart: always
+    environment:
+      POSTGRES_USER: vaultmart_user
+      POSTGRES_PASSWORD: DSTecsup2
+      POSTGRES_DB: vaultmart_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Administrador Visual de Base de Datos
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: vaultmart-pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
