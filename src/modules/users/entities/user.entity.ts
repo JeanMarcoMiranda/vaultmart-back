@@ -1,4 +1,4 @@
-import { AbstractTenantEntity } from 'src/common/entities/abstract-tenant.entity';
+import { TenantAwareEntity } from 'src/common/entities/tenant-aware.entity';
 import { Tenant } from 'src/modules/tenants/entities/tenant.entity';
 import {
   Column,
@@ -18,7 +18,7 @@ export enum UserRole {
 }
 
 @Entity('users')
-export class User extends AbstractTenantEntity {
+export class User extends TenantAwareEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
