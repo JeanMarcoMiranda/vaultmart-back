@@ -6,11 +6,13 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  Unique,
 } from 'typeorm';
 import { User } from './user.entity';
 import { Branch } from 'src/modules/businesses/entities/branch.entity';
 
 @Entity('user_branch_assignments')
+@Unique(['userId', 'branchId', 'tenantId'])
 export class UserBranchAssignment extends TenantAwareEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -31,6 +33,6 @@ export class UserBranchAssignment extends TenantAwareEntity {
   @Column({ name: 'branch_id' })
   branchId: string;
 
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+  @CreateDateColumn({ name: 'assigned_at' })
+  assignedAt: Date;
 }
