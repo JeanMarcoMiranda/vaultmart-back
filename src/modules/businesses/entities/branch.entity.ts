@@ -1,5 +1,14 @@
 import { TenantAwareEntity } from 'src/common/entities/tenant-aware.entity';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Business } from './business.entity';
 
 @Entity('branches')
 export class Branch extends TenantAwareEntity {
@@ -12,8 +21,24 @@ export class Branch extends TenantAwareEntity {
   @Column({ nullable: true })
   address: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   phone: string;
 
-  @Column({default: true})
+  @Column({ default: true })
+  isActive: boolean;
+
+  @ManyToOne(() => Business, (business) => business.branches, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'business_id' })
+  business: Business;
+
+  @Column({ name: 'business_id', nullable: false })
+  businessId: string;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updateAt: Date;
 }

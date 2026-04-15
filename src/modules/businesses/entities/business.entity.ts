@@ -3,9 +3,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Branch } from './branch.entity';
 
 @Entity('businesses')
 export class Business extends TenantAwareEntity {
@@ -27,7 +29,7 @@ export class Business extends TenantAwareEntity {
   @Column({ default: true })
   isActive: boolean;
 
-  @Column(() => Branch, (branch) => branch.business, { cascade: true })
+  @OneToMany(() => Branch, (branch) => branch.business, { cascade: true })
   branches: Branch[];
 
   @CreateDateColumn({ name: 'created_at' })
