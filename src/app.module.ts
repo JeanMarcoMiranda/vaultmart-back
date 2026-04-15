@@ -11,23 +11,26 @@ import { TenantsService } from './modules/tenants/tenants.service';
 import { TenantMiddleware } from './common/middleware/tenant.middleware';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { BusinessesModule } from './modules/businesses/businesses.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: '.env',
     }),
 
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (ConfigService: ConfigService) => ({
+      useFactory: (config: ConfigService) => ({
         type: 'postgres',
-        host: ConfigService.get<string>('DB_HOST'),
-        port: ConfigService.get<number>('DB_PORT'),
-        username: ConfigService.get<string>('DB_USERNAME'),
-        password: ConfigService.get<string>('DB_PASSWORD'),
-        database: ConfigService.get<string>('DB_NAME'),
+        host: config.get<string>('DB_HOST'),
+        port: config.get<number>('DB_PORT'),
+        username: config.get<string>('DB_USERNAME'),
+        password: config.get<string>('DB_PASSWORD'),
+        database: config.get<string>('DB_NAME'),
+        entities: [__dirname + '../**/*.entity{.ts,.js}'],
         autoLoadEntities: true,
         synchronize: true,
       }),
@@ -35,6 +38,7 @@ import { AuthModule } from './modules/auth/auth.module';
     TenantsModule,
     UsersModule,
     AuthModule,
+    BusinessesModule,
   ],
   providers: [TenantsService],
 })

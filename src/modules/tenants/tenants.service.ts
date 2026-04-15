@@ -10,8 +10,10 @@ export class TenantsService {
     private readonly tenantRepository: Repository<Tenant>,
   ) {}
 
-  async create(name: string, slug: string): Promise<Tenant> {
-    const existing = await this.tenantRepository.findOne({ where: { slug } });
+  async create(name: string, slug: string): Promise<Tenant | null> {
+    const existing = await this.tenantRepository.findOne({
+      where: { slug, isActive: true },
+    });
 
     if (existing) {
       throw new ConflictException('Tenant with this slug already exists');
@@ -21,13 +23,19 @@ export class TenantsService {
     return await this.tenantRepository.save(tenant);
   }
 
-  async findAll(): Promise<Tenant[]> {
-    return await this.tenantRepository.find();
+  async findBySlug(slug: string): Promise<Tenant | null> {
+    return await this.tenantRepository.findOne({
+      where: { slug, isActive: true },
+    });
   }
 
-  async findOne(id: string): Promise<Tenant | null> {
+  async findById(id: string): Promise<Tenant | null> {
     return await this.tenantRepository.findOne({
       where: { id, isActive: true },
     });
+  }
+
+  async findAll(): Promise<Tenant[]> {
+    return await this.tenantRepository.find();
   }
 }
